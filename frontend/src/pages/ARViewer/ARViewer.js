@@ -118,8 +118,8 @@ const ARViewer = () => {
 
   const handleShare = async () => {
     const shareData = {
-      title: currentCharacter ? `${currentCharacter.name} - AR View` : 'Stem Array Sutra AR',
-      text: currentCharacter ? currentCharacter.description : 'Experience Buddhist wisdom in AR',
+      title: currentCharacter ? `${currentCharacter.name} - AR View` : 'Universal Wisdom AR',
+      text: currentCharacter ? currentCharacter.description : 'Experience universal wisdom in AR',
       url: window.location.href
     };
 
