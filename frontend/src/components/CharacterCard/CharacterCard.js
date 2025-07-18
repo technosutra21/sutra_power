@@ -11,8 +11,9 @@ const CharacterCard = ({
   viewMode = 'grid' 
 }) => {
   const { favorites, toggleFavorite } = useCharacters();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
+  const [modelError, setModelError] = useState(false);
 
   const isFavorite = favorites.includes(character.id);
 
