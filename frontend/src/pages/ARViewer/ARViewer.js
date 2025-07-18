@@ -9,7 +9,7 @@ import './ARViewer.css';
 const ARViewer = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { getCharacterById } = useCharacters();
+  const { getCharacterByChapter } = useCharacters();
   const modelViewerRef = useRef(null);
   
   const [currentModelId, setCurrentModelId] = useState(
@@ -22,9 +22,7 @@ const ARViewer = () => {
   const [cameraPermission, setCameraPermission] = useState(null);
   const [modelLoaded, setModelLoaded] = useState(false);
 
-  const currentCharacter = getCharacterById(
-    useCharacters().characters.find(c => c.chapter === currentModelId)?.id
-  ) || useCharacters().characters.find(c => c.chapter === currentModelId);
+  const currentCharacter = getCharacterByChapter(currentModelId);
 
   // Check AR support
   useEffect(() => {
