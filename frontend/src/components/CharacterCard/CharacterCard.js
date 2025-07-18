@@ -36,10 +36,12 @@ const CharacterCard = ({
 
   const handleModelLoad = () => {
     setIsLoading(false);
+    setModelError(false);
   };
 
   const handleModelError = () => {
     setIsLoading(false);
+    setModelError(true);
   };
 
   return (
