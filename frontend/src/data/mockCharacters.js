@@ -20,7 +20,7 @@ export const mockCharacters = [
     name: 'Samantabhadra',
     type: 'Bodhisattva',
     chapter: 2,
-    modelUrl: 'modelo2.glb',
+    modelUrl: '/modelo2.glb',
     available: true,
     tags: ['Bodhisattva', 'Prática', 'Virtude'],
     description: 'O Bodhisattva da prática universal, representando a aplicação perfeita dos ensinamentos budistas em todas as situações da vida.',
