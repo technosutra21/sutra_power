@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { useCharacters } from '../../contexts/CharacterContext';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { textLoader, parseCharacterProfile, getCharacterFilename } from '../../utils/textLoader';
+import CyberpunkLoader from '../CyberpunkLoader/CyberpunkLoader';
 import './CharacterModal.css';
 
 const CharacterModal = ({ 
@@ -8,226 +9,364 @@ const CharacterModal = ({
   isOpen, 
   onClose, 
   onViewInAR, 
-  onShare 
+  onViewDetails,
+  onShare, 
+  onFavorite,
+  isFavorite,
+  variant = 'cyberpunk'
 }) => {
-  const { favorites, toggleFavorite } = useCharacters();
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
-  const [isClosing, setIsClosing] = useState(false);
-
-  const isFavorite = favorites.includes(character.id);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      setIsClosing(false);
-    } else {
-      document.body.style.overflow = 'unset';
+    if (isOpen && character) {
+      loadCharacterProfile();
     }
+  }, [isOpen, character]);
 
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
-  const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      onClose();
-      setIsClosing(false);
-    }, 300);
+  const loadCharacterProfile = async () => {
+    if (!character) return;
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const filename = getCharacterFilename(character.name);
+      const textContent = await textLoader.loadText(filename);
+      const parsed = parseCharacterProfile(textContent);
+      setProfileData(parsed);
+    } catch (err) {
+      console.error('Error loading character profile:', err);
+      setError('Failed to load character profile');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
-      handleClose();
+      onClose();
     }
   };
 
-  const handleFavoriteToggle = () => {
-    toggleFavorite(character.id);
+  const handleActionClick = (action) => {
+    action();
+    onClose();
   };
 
-  if (!isOpen) return null;
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: '👁️' },
+    { id: 'profile', label: 'Profile', icon: '📋' },
+    { id: 'powers', label: 'Powers', icon: '⚡' },
+    { id: 'spiritual', label: 'Spiritual', icon: '🧘' },
+  ];
 
-  const modalContent = (
-    <div 
-      className={`character-modal-overlay ${isClosing ? 'closing' : ''}`}
-      onClick={handleBackdropClick}
-    >
-      <div className={`character-modal ${isClosing ? 'closing' : ''}`}>
-        {/* Header */}
-        <div className="modal-header">
-          <div className="modal-title-section">
-            <h2 className="modal-title">{character.name}</h2>
-            <div className="modal-meta">
-              <span className="modal-type">{character.type}</span>
-              <span className="modal-chapter">Chapter {character.chapter}</span>
-              <span className={`modal-status ${character.available ? 'available' : 'unavailable'}`}>
-                {character.available ? 'Available' : 'Coming Soon'}
-              </span>
+  const modalVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.8,
+      y: 100
+    },
+    visible: { 
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    },
+    exit: { 
+      opacity: 0,
+      scale: 0.8,
+      y: -100,
+      transition: {
+        duration: 0.3
+      }
+    }
+  };
+
+  const backdropVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 }
+  };
+
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20
+      }
+    }
+  };
+
+  if (!isOpen || !character) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="character-modal-backdrop"
+        variants={backdropVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        onClick={handleBackdropClick}
+      >
+        <motion.div
+          className={`character-modal ${variant}`}
+          variants={modalVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Modal Header */}
+          <div className="modal-header">
+            <div className="header-content">
+              <div className="character-avatar">
+                <img 
+                  src={character.imageUrl || `/images/placeholder-${character.id}.jpg`}
+                  alt={character.name}
+                  onError={(e) => {
+                    e.target.src = '/images/placeholder-character.jpg';
+                  }}
+                />
+                <div className="avatar-glow" />
+              </div>
+              <div className="character-info">
+                <h2 className="character-name">{character.name}</h2>
+                <p className="character-type">{character.type}</p>
+                <p className="character-chapter">Chapter {character.chapter}</p>
+              </div>
+              <button 
+                className="favorite-btn"
+                onClick={() => onFavorite(character)}
+              >
+                {isFavorite ? '💛' : '🤍'}
+              </button>
             </div>
-          </div>
-          
-          <div className="modal-actions">
-            <button 
-              className={`modal-favorite ${isFavorite ? 'active' : ''}`}
-              onClick={handleFavoriteToggle}
-              aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-            >
-              {isFavorite ? '❤️' : '🤍'}
-            </button>
-            <button 
-              className="modal-share"
-              onClick={onShare}
-              aria-label="Share character"
-            >
-              📤
-            </button>
-            <button 
-              className="modal-close"
-              onClick={handleClose}
-              aria-label="Close modal"
-            >
+            <button className="close-btn" onClick={onClose}>
               ✕
             </button>
           </div>
-        </div>
 
-        {/* Content */}
-        <div className="modal-content">
-          {/* 3D Model */}
-          <div className="modal-model-section">
-            <div className="modal-model-container">
-              {character.available ? (
-                <model-viewer
-                  src={character.modelUrl}
-                  alt={`3D model of ${character.name}`}
-                  auto-rotate
-                  camera-controls
-                  loading="lazy"
-                  style={{ width: '100%', height: '100%' }}
-                />
-              ) : (
-                <div className="modal-model-placeholder">
-                  <div className="placeholder-icon">🔮</div>
-                  <p>3D Model Coming Soon</p>
-                </div>
-              )}
-            </div>
-            <div className="modal-model-actions">
-              <button 
-                className="modal-ar-button"
-                onClick={onViewInAR}
-                disabled={!character.available}
+          {/* Tab Navigation */}
+          <div className="tab-navigation">
+            {tabs.map((tab) => (
+              <motion.button
+                key={tab.id}
+                className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <span className="ar-icon">📱</span>
-                View in AR
-              </button>
-            </div>
+                <span className="tab-icon">{tab.icon}</span>
+                <span className="tab-label">{tab.label}</span>
+              </motion.button>
+            ))}
           </div>
 
-          {/* Character Info */}
-          <div className="modal-info-section">
-            {/* Tabs */}
-            <div className="modal-tabs">
-              <button 
-                className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
-                onClick={() => setActiveTab('overview')}
+          {/* Modal Content */}
+          <div className="modal-content">
+            {loading ? (
+              <CyberpunkLoader 
+                text="Loading Profile..." 
+                size="medium" 
+                variant="minimal" 
+              />
+            ) : error ? (
+              <div className="error-content">
+                <div className="error-icon">⚠️</div>
+                <p className="error-message">{error}</p>
+                <button 
+                  className="retry-btn"
+                  onClick={loadCharacterProfile}
+                >
+                  Retry
+                </button>
+              </div>
+            ) : (
+              <motion.div
+                className="content-container"
+                variants={contentVariants}
+                initial="hidden"
+                animate="visible"
               >
-                Overview
-              </button>
-              <button 
-                className={`tab-button ${activeTab === 'spiritual' ? 'active' : ''}`}
-                onClick={() => setActiveTab('spiritual')}
-              >
-                Spiritual
-              </button>
-              <button 
-                className={`tab-button ${activeTab === 'physical' ? 'active' : ''}`}
-                onClick={() => setActiveTab('physical')}
-              >
-                Physical
-              </button>
-            </div>
+                {activeTab === 'overview' && (
+                  <motion.div className="overview-content" variants={itemVariants}>
+                    <div className="description-section">
+                      <h3>Description</h3>
+                      <p>{character.description}</p>
+                    </div>
+                    
+                    <div className="stats-section">
+                      <h3>Statistics</h3>
+                      <div className="stat-grid">
+                        <div className="stat-item">
+                          <span className="stat-label">Type</span>
+                          <span className="stat-value">{character.type}</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">Chapter</span>
+                          <span className="stat-value">{character.chapter}</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">Status</span>
+                          <span className={`stat-value ${character.available ? 'available' : 'unavailable'}`}>
+                            {character.available ? 'Available' : 'Locked'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-            {/* Tab Content */}
-            <div className="modal-tab-content">
-              {activeTab === 'overview' && (
-                <div className="tab-content-overview">
-                  <div className="info-section">
-                    <h3>Description</h3>
-                    <p>{character.description}</p>
-                  </div>
-                  
-                  <div className="info-section">
-                    <h3>Location</h3>
-                    <p>{character.location}</p>
-                  </div>
-                  
-                  <div className="info-section">
-                    <h3>Attributes</h3>
-                    <div className="tags-container">
-                      {character.tags.map((tag, index) => (
-                        <span key={index} className="info-tag">{tag}</span>
+                    <div className="tags-section">
+                      <h3>Attributes</h3>
+                      <div className="tag-list">
+                        {character.tags.map((tag, index) => (
+                          <span key={index} className="tag">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {activeTab === 'profile' && (
+                  <motion.div className="profile-content" variants={itemVariants}>
+                    {profileData ? (
+                      <>
+                        <div className="profile-section">
+                          <h3>Location</h3>
+                          <p>{profileData.location || character.location}</p>
+                        </div>
+                        
+                        <div className="profile-section">
+                          <h3>Physical Description</h3>
+                          <p>{profileData.physicalDescription || character.physicalDescription}</p>
+                        </div>
+                        
+                        <div className="profile-section">
+                          <h3>Mystic Experience</h3>
+                          <p>{profileData.mysticExperience || character.mysticExperience}</p>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="default-profile">
+                        <div className="profile-section">
+                          <h3>Location</h3>
+                          <p>{character.location}</p>
+                        </div>
+                        <div className="profile-section">
+                          <h3>Physical Description</h3>
+                          <p>{character.physicalDescription}</p>
+                        </div>
+                        <div className="profile-section">
+                          <h3>Mystic Experience</h3>
+                          <p>{character.mysticExperience}</p>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+
+                {activeTab === 'powers' && (
+                  <motion.div className="powers-content" variants={itemVariants}>
+                    <h3>Special Powers</h3>
+                    <div className="powers-grid">
+                      {(profileData?.specialPowers || character.specialPowers || []).map((power, index) => (
+                        <div key={index} className="power-item">
+                          <div className="power-icon">⚡</div>
+                          <div className="power-text">{power}</div>
+                        </div>
                       ))}
                     </div>
-                  </div>
-                </div>
-              )}
+                  </motion.div>
+                )}
 
-              {activeTab === 'spiritual' && (
-                <div className="tab-content-spiritual">
-                  <div className="info-section">
+                {activeTab === 'spiritual' && (
+                  <motion.div className="spiritual-content" variants={itemVariants}>
                     <h3>Spiritual Attributes</h3>
-                    <ul className="attribute-list">
-                      {character.spiritualAttributes.map((attr, index) => (
-                        <li key={index}>{attr}</li>
+                    <div className="spiritual-grid">
+                      {(profileData?.spiritualAttributes || character.spiritualAttributes || []).map((attr, index) => (
+                        <div key={index} className="spiritual-item">
+                          <div className="spiritual-icon">🧘</div>
+                          <div className="spiritual-text">{attr}</div>
+                        </div>
                       ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="info-section">
-                    <h3>Special Powers</h3>
-                    <ul className="attribute-list">
-                      {character.specialPowers.map((power, index) => (
-                        <li key={index}>{power}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="info-section">
-                    <h3>Mystic Experience</h3>
-                    <p>{character.mysticExperience}</p>
-                  </div>
-                </div>
-              )}
+                    </div>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+          </div>
 
-              {activeTab === 'physical' && (
-                <div className="tab-content-physical">
-                  <div className="info-section">
-                    <h3>Physical Description</h3>
-                    <p>{character.physicalDescription}</p>
-                  </div>
-                  
-                  <div className="info-section">
-                    <h3>Appearance Features</h3>
-                    <ul className="attribute-list">
-                      <li>Traditional Buddhist iconography</li>
-                      <li>Symbolic colors and ornaments</li>
-                      <li>Meditation posture variations</li>
-                      <li>Sacred gestures (mudras)</li>
-                    </ul>
-                  </div>
-                </div>
-              )}
+          {/* Action Buttons */}
+          <div className="modal-actions">
+            <motion.button
+              className="action-btn primary"
+              onClick={() => handleActionClick(onViewDetails)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              View Full Profile
+            </motion.button>
+            
+            {character.available && (
+              <motion.button
+                className="action-btn secondary"
+                onClick={() => handleActionClick(onViewInAR)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Experience in AR
+              </motion.button>
+            )}
+            
+            <motion.button
+              className="action-btn tertiary"
+              onClick={() => handleActionClick(onShare)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Share Character
+            </motion.button>
+          </div>
+
+          {/* Holographic Effects */}
+          <div className="modal-holo-effects">
+            <div className="holo-line holo-line-1" />
+            <div className="holo-line holo-line-2" />
+            <div className="holo-particle-system">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className={`holo-particle holo-particle-${i + 1}`} />
+              ))}
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
-
-  return createPortal(modalContent, document.body);
 };
 
 export default CharacterModal;
