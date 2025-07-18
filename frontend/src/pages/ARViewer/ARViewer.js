@@ -23,8 +23,8 @@ const ARViewer = () => {
   const [modelLoaded, setModelLoaded] = useState(false);
 
   const currentCharacter = getCharacterById(
-    Object.values(useCharacters().characters).find(c => c.chapter === currentModelId)?.id
-  );
+    useCharacters().characters.find(c => c.chapter === currentModelId)?.id
+  ) || useCharacters().characters.find(c => c.chapter === currentModelId);
 
   // Check AR support
   useEffect(() => {
