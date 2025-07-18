@@ -60,7 +60,7 @@ const Gallery = () => {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: `${character.name} - Stem Array Sutra`,
+          title: `${character.name} - Universal Wisdom`,
           text: character.description,
           url: `${window.location.origin}/character/${character.id}`
         });
