@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import './SearchFilters.css';
 
 const SearchFilters = ({
@@ -16,8 +16,6 @@ const SearchFilters = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
-
-  // Debounced search
   const [debouncedSearch, setDebouncedSearch] = useState(searchTerm);
 
   useEffect(() => {
@@ -48,19 +46,10 @@ const SearchFilters = ({
   ];
 
   return (
-    <motion.div 
-      className="search-filters cyberpunk"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
+    <div className="search-filters cyberpunk">
       {/* Search Bar */}
       <div className="search-container">
-        <motion.div 
-          className={`search-input-container ${searchFocused ? 'focused' : ''}`}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
+        <div className={`search-input-container ${searchFocused ? 'focused' : ''}`}>
           <div className="search-icon">🔍</div>
           <input
             type="text"
@@ -72,18 +61,14 @@ const SearchFilters = ({
             className="search-input"
           />
           {debouncedSearch && (
-            <motion.button
+            <button
               className="search-clear"
               onClick={() => setDebouncedSearch('')}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
             >
               ❌
-            </motion.button>
+            </button>
           )}
-        </motion.div>
+        </div>
       </div>
 
       {/* Filter Controls */}
@@ -93,16 +78,14 @@ const SearchFilters = ({
           <span className="filter-label">Filter:</span>
           <div className="filter-options">
             {filterOptions.map((option) => (
-              <motion.button
+              <button
                 key={option.value}
                 className={`filter-btn ${selectedFilter === option.value ? 'active' : ''}`}
                 onClick={() => onFilterChange(option.value)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
               >
                 <span className="filter-icon">{option.icon}</span>
                 <span className="filter-text">{option.label}</span>
-              </motion.button>
+              </button>
             ))}
           </div>
         </div>
@@ -112,16 +95,14 @@ const SearchFilters = ({
           <span className="filter-label">View:</span>
           <div className="view-mode-options">
             {viewModeOptions.map((option) => (
-              <motion.button
+              <button
                 key={option.value}
                 className={`view-mode-btn ${viewMode === option.value ? 'active' : ''}`}
                 onClick={() => onViewModeChange(option.value)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
                 title={option.label}
               >
                 <span className="view-mode-icon">{option.icon}</span>
-              </motion.button>
+              </button>
             ))}
           </div>
         </div>
@@ -129,98 +110,78 @@ const SearchFilters = ({
         {/* Sort Options */}
         <div className="filter-group">
           <span className="filter-label">Sort:</span>
-          <motion.select
+          <select
             className="sort-select"
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value)}
-            whileHover={{ scale: 1.02 }}
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </motion.select>
+          </select>
         </div>
 
         {/* Advanced Filters Toggle */}
-        <motion.button
+        <button
           className="advanced-toggle"
           onClick={() => setIsExpanded(!isExpanded)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
         >
           <span className="advanced-icon">⚙️</span>
           <span className="advanced-text">
             {isExpanded ? 'Less' : 'More'}
           </span>
-        </motion.button>
+        </button>
       </div>
 
       {/* Advanced Filters */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            className="advanced-filters"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="advanced-controls">
-              <div className="advanced-group">
-                <span className="advanced-label">Show Stats:</span>
-                <motion.button
-                  className={`toggle-btn ${showStats ? 'active' : ''}`}
-                  onClick={() => onStatsToggle(!showStats)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="toggle-icon">
-                    {showStats ? '👁️' : '🙈'}
-                  </span>
-                  <span className="toggle-text">
-                    {showStats ? 'Hide' : 'Show'}
-                  </span>
-                </motion.button>
-              </div>
-              
-              <div className="advanced-group">
-                <span className="advanced-label">Performance:</span>
-                <motion.button
-                  className="performance-btn"
-                  onClick={() => {
-                    // Clear cache or optimize performance
-                    if (window.caches) {
-                      caches.keys().then(names => {
-                        names.forEach(name => {
-                          if (name.includes('character-images')) {
-                            caches.delete(name);
-                          }
-                        });
-                      });
-                    }
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="performance-icon">🚀</span>
-                  <span className="performance-text">Clear Cache</span>
-                </motion.button>
-              </div>
+      {isExpanded && (
+        <div className="advanced-filters">
+          <div className="advanced-controls">
+            <div className="advanced-group">
+              <span className="advanced-label">Show Stats:</span>
+              <button
+                className={`toggle-btn ${showStats ? 'active' : ''}`}
+                onClick={() => onStatsToggle(!showStats)}
+              >
+                <span className="toggle-icon">
+                  {showStats ? '👁️' : '🙈'}
+                </span>
+                <span className="toggle-text">
+                  {showStats ? 'Hide' : 'Show'}
+                </span>
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            
+            <div className="advanced-group">
+              <span className="advanced-label">Performance:</span>
+              <button
+                className="performance-btn"
+                onClick={() => {
+                  // Clear cache
+                  if (window.caches) {
+                    caches.keys().then(names => {
+                      names.forEach(name => {
+                        if (name.includes('character-images')) {
+                          caches.delete(name);
+                        }
+                      });
+                    });
+                  }
+                }}
+              >
+                <span className="performance-icon">🚀</span>
+                <span className="performance-text">Clear Cache</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Filter Results Summary */}
       {(searchTerm || selectedFilter !== 'all') && (
-        <motion.div 
-          className="filter-summary"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="filter-summary">
           <div className="summary-content">
             <span className="summary-text">
               {searchTerm && (
@@ -234,21 +195,19 @@ const SearchFilters = ({
                 </span>
               )}
             </span>
-            <motion.button
+            <button
               className="clear-all-btn"
               onClick={() => {
                 setDebouncedSearch('');
                 onFilterChange('all');
               }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               Clear All
-            </motion.button>
+            </button>
           </div>
-        </motion.div>
+        </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 
