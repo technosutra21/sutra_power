@@ -80,23 +80,31 @@ const CharacterCard = ({
         {isLoading && (
           <div className="model-loading">
             <div className="loading-spinner"></div>
+            <p>Loading 3D model...</p>
           </div>
         )}
         
-        {character.available ? (
+        {character.available && !modelError ? (
           <model-viewer
             src={character.modelUrl}
             alt={`3D model of ${character.name}`}
             auto-rotate
             loading="lazy"
-            onLoad={handleModelLoad}
-            onError={handleModelError}
+            poster={character.imageUrl}
             style={{
               width: '100%',
               height: '200px',
               background: 'transparent'
             }}
+            onLoad={handleModelLoad}
+            onError={handleModelError}
           />
+        ) : modelError ? (
+          <div className="model-error">
+            <div className="error-icon">⚠️</div>
+            <p>Model failed to load</p>
+            <small>Using fallback placeholder</small>
+          </div>
         ) : (
           <div className="model-placeholder">
             <div className="placeholder-icon">🔮</div>
