@@ -4,7 +4,7 @@ export const mockCharacters = [
     name: 'Buda Śākyamuni',
     type: 'Fundador',
     chapter: 1,
-    modelUrl: 'modelo1.glb',
+    modelUrl: '/modelo1.glb',
     available: true,
     tags: ['Fundador', 'Iluminado', 'Mestre'],
     description: 'O Buda histórico, fundador do budismo e guia espiritual da humanidade. Sua iluminação sob a árvore Bodhi marca o início da tradição budista.',
