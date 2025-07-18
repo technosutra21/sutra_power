@@ -1,170 +1,98 @@
+/* Cyberpunk Gallery Styles */
 .gallery {
   min-height: 100vh;
-  padding: 0;
-}
-
-.gallery-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  color: var(--text-secondary);
-}
-
-.gallery-loading .loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 3px solid var(--border-secondary);
-  border-top: 3px solid var(--primary-violet);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: var(--space-lg);
-}
-
-.gallery-error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  text-align: center;
-  color: var(--text-secondary);
-}
-
-.gallery-error .error-icon {
-  font-size: 4rem;
-  margin-bottom: var(--space-lg);
-  opacity: 0.8;
-}
-
-.gallery-error h2 {
-  margin-bottom: var(--space-md);
-  color: var(--text-primary);
+  padding: 2rem 0;
+  position: relative;
 }
 
 /* Hero Section */
 .gallery-hero {
-  position: relative;
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 4rem 2rem;
   text-align: center;
-  padding: var(--space-3xl) var(--space-lg);
+  position: relative;
   overflow: hidden;
 }
 
-.gallery-hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 70% 70%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
-  pointer-events: none;
-}
-
 .hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 10;
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  margin-bottom: var(--space-lg);
-  line-height: 1.1;
-}
-
-.hero-subtitle {
-  display: block;
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  font-weight: 300;
-  color: var(--text-secondary);
-  margin-top: var(--space-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
 }
 
 .hero-description {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--text-secondary);
+  max-width: 800px;
+  margin: 0 auto 3rem;
   line-height: 1.6;
-  margin-bottom: var(--space-2xl);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .hero-decoration {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
+  z-index: 1;
 }
 
 .hero-orb {
   position: absolute;
   border-radius: 50%;
-  background: var(--gradient-primary);
-  filter: blur(40px);
-  opacity: 0.3;
-  animation: float 6s ease-in-out infinite;
+  opacity: 0.15;
 }
 
 .hero-orb-1 {
-  width: 200px;
-  height: 200px;
-  top: 20%;
+  width: 300px;
+  height: 300px;
+  top: 10%;
   left: 10%;
-  animation-delay: 0s;
+  background: radial-gradient(circle, var(--neon-cyan) 0%, transparent 70%);
+  box-shadow: 0 0 100px var(--neon-cyan);
 }
 
 .hero-orb-2 {
-  width: 150px;
-  height: 150px;
-  top: 60%;
-  right: 15%;
-  animation-delay: 2s;
-  background: var(--gradient-secondary);
+  width: 200px;
+  height: 200px;
+  top: 20%;
+  right: 20%;
+  background: radial-gradient(circle, var(--neon-pink) 0%, transparent 70%);
+  box-shadow: 0 0 80px var(--neon-pink);
 }
 
 .hero-orb-3 {
-  width: 100px;
-  height: 100px;
-  bottom: 20%;
-  left: 70%;
-  animation-delay: 4s;
-  background: var(--gradient-accent);
+  width: 150px;
+  height: 150px;
+  bottom: 30%;
+  left: 60%;
+  background: radial-gradient(circle, var(--neon-green) 0%, transparent 70%);
+  box-shadow: 0 0 60px var(--neon-green);
 }
 
 /* Gallery Controls */
 .gallery-controls {
-  padding: var(--space-2xl) var(--space-lg);
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border-secondary);
-  border-bottom: 1px solid var(--border-secondary);
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Gallery Content */
 .gallery-content {
-  padding: var(--space-3xl) var(--space-lg);
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .character-grid {
   display: grid;
-  gap: var(--space-xl);
-  max-width: 1400px;
-  margin: 0 auto;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 .character-grid.grid {
@@ -173,29 +101,102 @@
 
 .character-grid.list {
   grid-template-columns: 1fr;
-  gap: var(--space-lg);
+  gap: 1rem;
 }
 
 .character-grid.compact {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-lg);
+  gap: 1.5rem;
 }
 
+/* No Results */
 .no-results {
   text-align: center;
-  padding: var(--space-3xl) var(--space-lg);
+  padding: 4rem 2rem;
   color: var(--text-secondary);
 }
 
 .no-results-icon {
   font-size: 4rem;
-  margin-bottom: var(--space-lg);
-  opacity: 0.6;
+  margin-bottom: 1rem;
+  opacity: 0.7;
 }
 
-.no-results h3 {
-  margin-bottom: var(--space-md);
+.no-results-title {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.no-results-message {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Loading States */
+.gallery-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* Error States */
+.gallery-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.error-content {
+  text-align: center;
+  max-width: 600px;
+}
+
+.error-icon {
+  font-size: 4rem;
+  color: var(--neon-pink);
+  margin-bottom: 1rem;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.error-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.error-message {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Cyberpunk Enhancements */
+.gallery::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(0, 255, 255, 0.03) 0%, transparent 30%),
+    radial-gradient(circle at 90% 80%, rgba(255, 0, 255, 0.03) 0%, transparent 30%),
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.02) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Responsive Design */
@@ -210,68 +211,68 @@
 }
 
 @media (max-width: 768px) {
+  .gallery {
+    padding: 1rem 0;
+  }
+  
   .gallery-hero {
-    min-height: 50vh;
-    padding: var(--space-2xl) var(--space-md);
+    padding: 2rem 1rem;
   }
   
-  .gallery-controls {
-    padding: var(--space-lg) var(--space-md);
+  .hero-description {
+    font-size: 1.1rem;
   }
   
+  .gallery-controls,
   .gallery-content {
-    padding: var(--space-2xl) var(--space-md);
+    padding: 1rem;
   }
   
-  .character-grid.grid {
-    grid-template-columns: 1fr;
-  }
-  
+  .character-grid.grid,
   .character-grid.compact {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
   }
   
   .hero-orb-1 {
-    width: 120px;
-    height: 120px;
+    width: 200px;
+    height: 200px;
   }
   
   .hero-orb-2 {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
   }
   
   .hero-orb-3 {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
   }
 }
 
 @media (max-width: 480px) {
-  .gallery-hero {
-    padding: var(--space-xl) var(--space-sm);
-  }
-  
-  .gallery-controls {
-    padding: var(--space-md) var(--space-sm);
-  }
-  
-  .gallery-content {
-    padding: var(--space-xl) var(--space-sm);
-  }
-  
+  .character-grid.grid,
   .character-grid.compact {
     grid-template-columns: 1fr;
   }
-}
-
-/* Animation keyframes */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+  
+  .hero-description {
+    font-size: 1rem;
+  }
+  
+  .no-results-icon {
+    font-size: 3rem;
+  }
+  
+  .no-results-title {
+    font-size: 1.2rem;
+  }
+  
+  .error-icon {
+    font-size: 3rem;
+  }
+  
+  .error-title {
+    font-size: 1.5rem;
+  }
 }
