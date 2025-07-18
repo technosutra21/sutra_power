@@ -104,7 +104,7 @@ const ModelViewer = forwardRef(({
   }, [onLoad, onError, onARStatusChange]);
 
   // Use character's modelUrl if available, otherwise construct from modelId
-  const modelSrc = character?.modelUrl || `/modelo${modelId}.glb`;
+  const modelSrc = character?.modelUrl || `/src/data/models/modelo${modelId}.glb`;
   const modelAlt = character ? `3D model of ${character.name}` : `3D model ${modelId}`;
 
   return (
