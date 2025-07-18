@@ -132,7 +132,7 @@ export const mockCharacters = [
     name: 'Vajrapāṇi',
     type: 'Bodhisattva',
     chapter: 25,
-    modelUrl: 'modelo25.glb',
+    modelUrl: '/modelo9.glb',
     available: true,
     tags: ['Bodhisattva', 'Poder', 'Proteção'],
     description: 'O Bodhisattva do poder espiritual, wielding the vajra diamond thunderbolt of spiritual transformation.',
