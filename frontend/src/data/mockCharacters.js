@@ -116,7 +116,7 @@ export const mockCharacters = [
     name: 'Maitreya',
     type: 'Bodhisattva',
     chapter: 54,
-    modelUrl: 'modelo54.glb',
+    modelUrl: '/modelo8.glb',
     available: true,
     tags: ['Bodhisattva', 'Futuro', 'Amor'],
     description: 'O Bodhisattva do amor universal, destinado a ser o próximo Buda e trazer uma era de paz e harmonia.',
