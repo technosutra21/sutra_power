@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { mockCharacters } from '../data/mockCharacters';
+import { characterDataLoader } from '../data/characterData';
 
 const CharacterContext = createContext();
 
@@ -24,14 +24,13 @@ export function CharacterProvider({ children }) {
     const loadCharacters = async () => {
       try {
         setLoading(true);
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // TODO: Replace with actual API call
-        setCharacters(mockCharacters);
         setError(null);
+        
+        const charactersData = await characterDataLoader.loadCharacters();
+        setCharacters(charactersData);
       } catch (err) {
-        setError(err.message);
+        console.error('Failed to load characters:', err);
+        setError('Failed to load character data. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -42,7 +41,7 @@ export function CharacterProvider({ children }) {
 
   // Load favorites from localStorage
   useEffect(() => {
-    const savedFavorites = localStorage.getItem('stem-array-favorites');
+    const savedFavorites = localStorage.getItem('universal-wisdom-favorites');
     if (savedFavorites) {
       setFavorites(JSON.parse(savedFavorites));
     }
@@ -50,19 +49,21 @@ export function CharacterProvider({ children }) {
 
   // Save favorites to localStorage
   useEffect(() => {
-    localStorage.setItem('stem-array-favorites', JSON.stringify(favorites));
+    localStorage.setItem('universal-wisdom-favorites', JSON.stringify(favorites));
   }, [favorites]);
 
   // Filter characters based on search and filter
   const filteredCharacters = characters.filter(character => {
     const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         character.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         character.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         character.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          character.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const matchesFilter = selectedFilter === 'all' || 
                          (selectedFilter === 'favorites' && favorites.includes(character.id)) ||
                          (selectedFilter === 'available' && character.available) ||
-                         (selectedFilter === 'bodhisattvas' && character.type === 'Bodhisattva');
+                         (selectedFilter === 'characters' && character.type === 'Character') ||
+                         character.tags.some(tag => tag.toLowerCase() === selectedFilter.toLowerCase());
 
     return matchesSearch && matchesFilter;
   });
@@ -79,16 +80,22 @@ export function CharacterProvider({ children }) {
     return characters.find(char => char.id === id);
   };
 
+  const getCharacterByChapter = (chapter) => {
+    return characters.find(char => char.chapter === chapter);
+  };
+
   const getStats = () => {
     const totalCharacters = characters.length;
     const availableCharacters = characters.filter(char => char.available).length;
-    const bodhisattvas = characters.filter(char => char.type === 'Bodhisattva').length;
+    const uniqueTypes = [...new Set(characters.map(char => char.type))].length;
+    const uniqueTags = [...new Set(characters.flatMap(char => char.tags))].length;
     const completionRate = totalCharacters > 0 ? Math.round((availableCharacters / totalCharacters) * 100) : 0;
 
     return {
       total: totalCharacters,
       available: availableCharacters,
-      bodhisattvas,
+      types: uniqueTypes,
+      tags: uniqueTags,
       completionRate,
       favorites: favorites.length
     };
@@ -106,6 +113,7 @@ export function CharacterProvider({ children }) {
     favorites,
     toggleFavorite,
     getCharacterById,
+    getCharacterByChapter,
     getStats
   };
 
