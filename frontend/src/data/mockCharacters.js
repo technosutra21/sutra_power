@@ -100,7 +100,7 @@ export const mockCharacters = [
     name: 'Avalokiteśvara',
     type: 'Bodhisattva',
     chapter: 30,
-    modelUrl: 'modelo30.glb',
+    modelUrl: '/modelo7.glb',
     available: true,
     tags: ['Bodhisattva', 'Compaixão', 'Misericórdia'],
     description: 'O Bodhisattva da compaixão infinita, ouvindo os clamores de todos os seres e oferecendo socorro imediato.',
