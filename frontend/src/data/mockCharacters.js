@@ -68,7 +68,7 @@ export const mockCharacters = [
     name: 'Sāgaramegha',
     type: 'Bodhisattva',
     chapter: 5,
-    modelUrl: 'modelo5.glb',
+    modelUrl: '/modelo5.glb',
     available: true,
     tags: ['Bodhisattva', 'Oceano', 'Nuvem'],
     description: 'O Bodhisattva do oceano-nuvem, representando a vastidão da compaixão como o oceano e sua ascensão como nuvem.',
