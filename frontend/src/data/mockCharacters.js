@@ -52,7 +52,7 @@ export const mockCharacters = [
     name: 'Meghaśrī',
     type: 'Bodhisattva',
     chapter: 4,
-    modelUrl: 'modelo4.glb',
+    modelUrl: '/modelo4.glb',
     available: true,
     tags: ['Bodhisattva', 'Nuvem', 'Proteção'],
     description: 'O Bodhisattva da nuvem gloriosa, oferecendo proteção e chuva de bênçãos para todos os seres.',
