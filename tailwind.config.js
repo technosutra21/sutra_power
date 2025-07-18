@@ -1,82 +1,60 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    darkMode: ["class"],
-    content: [
+  content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./public/index.html"
   ],
   theme: {
-  	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
-  		},
-  		keyframes: {
-  			'accordion-down': {
-  				from: {
-  					height: '0'
-  				},
-  				to: {
-  					height: 'var(--radix-accordion-content-height)'
-  				}
-  			},
-  			'accordion-up': {
-  				from: {
-  					height: 'var(--radix-accordion-content-height)'
-  				},
-  				to: {
-  					height: '0'
-  				}
-  			}
-  		},
-  		animation: {
-  			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
-  		}
-  	}
+    extend: {
+      colors: {
+        // Black AMOLED Base
+        'bg-primary': '#000000',
+        'bg-secondary': '#0a0a0a',
+        'bg-tertiary': '#111111',
+        'bg-card': '#0d0d0d',
+        
+        // Cyberpunk Neon Colors
+        'neon-cyan': '#00ffff',
+        'neon-pink': '#ff00ff',
+        'neon-green': '#00ff00',
+        'neon-blue': '#0080ff',
+        'neon-purple': '#8000ff',
+        'neon-yellow': '#ffff00',
+        'neon-orange': '#ff8000',
+        
+        // Text Colors
+        'text-primary': '#ffffff',
+        'text-secondary': '#cccccc',
+        'text-tertiary': '#999999',
+        'text-accent': '#00ffff',
+      },
+      backgroundImage: {
+        'holo-1': 'linear-gradient(45deg, #00ffff, #ff00ff, #00ff00, #ffff00)',
+        'holo-2': 'linear-gradient(135deg, #ff00ff, #0080ff, #00ffff, #8000ff)',
+        'holo-3': 'linear-gradient(90deg, #00ff00, #ffff00, #ff8000, #ff00ff)',
+      },
+      fontFamily: {
+        'cyber': ['Inter', 'system-ui', 'sans-serif'],
+      },
+      animation: {
+        'holographic-text': 'holographic-text 2s ease-in-out infinite alternate',
+        'neon-glow': 'neon-glow 2s ease-in-out infinite alternate',
+        'pulse-glow': 'pulse-glow 1.5s ease-in-out infinite',
+        'scan-line': 'scan-line 3s ease-in-out infinite',
+        'holographic-border': 'holographic-border 2s ease-in-out infinite alternate',
+      },
+      backdropBlur: {
+        'cyber': '20px',
+      },
+      boxShadow: {
+        'cyber': '0 0 20px rgba(0, 255, 255, 0.5)',
+        'cyber-strong': '0 0 40px rgba(0, 255, 255, 0.7)',
+        'neon-pink': '0 0 20px rgba(255, 0, 255, 0.5)',
+        'neon-green': '0 0 20px rgba(0, 255, 0, 0.5)',
+      },
+      borderRadius: {
+        'cyber': '12px',
+      },
+    },
   },
-  plugins: [require("tailwindcss-animate")],
-};
+  plugins: [],
+}
