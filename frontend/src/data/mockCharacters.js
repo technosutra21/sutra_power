@@ -36,7 +36,7 @@ export const mockCharacters = [
     name: 'Manjuśrī',
     type: 'Bodhisattva',
     chapter: 3,
-    modelUrl: 'modelo3.glb',
+    modelUrl: '/modelo3.glb',
     available: true,
     tags: ['Bodhisattva', 'Sabedoria', 'Conhecimento'],
     description: 'O Bodhisattva da sabedoria transcendente, cortando através da ignorância com a espada do conhecimento supremo.',
