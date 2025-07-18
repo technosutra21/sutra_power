@@ -1,0 +1,29 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 80px;
+  min-height: 100vh;
+  transition: padding-top var(--transition-normal);
+}
+
+.main-content.ar-mode {
+  padding-top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 70px;
+  }
+  
+  .main-content.ar-mode {
+    padding-top: 0;
+  }
+}
