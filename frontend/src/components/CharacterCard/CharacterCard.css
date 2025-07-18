@@ -138,6 +138,7 @@
   right: 0;
   bottom: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: var(--bg-secondary);
@@ -151,6 +152,41 @@
   border-top: 2px solid var(--primary-violet);
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  margin-bottom: var(--space-xs);
+}
+
+.model-loading p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.model-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-tertiary);
+  background: var(--bg-secondary);
+}
+
+.model-error .error-icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-xs);
+  opacity: 0.6;
+}
+
+.model-error p {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.model-error small {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  opacity: 0.8;
 }
 
 .model-placeholder {
