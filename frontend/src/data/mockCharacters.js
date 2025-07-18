@@ -148,7 +148,7 @@ export const mockCharacters = [
     name: 'Kṣitigarbha',
     type: 'Bodhisattva',
     chapter: 22,
-    modelUrl: 'modelo22.glb',
+    modelUrl: '/modelo10.glb',
     available: false,
     tags: ['Bodhisattva', 'Terra', 'Salvação'],
     description: 'O Bodhisattva da terra matriz, dedicado à salvação de todos os seres nos reinos inferiores.',
