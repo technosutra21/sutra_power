@@ -101,12 +101,12 @@ const Gallery = () => {
       <section className="gallery-hero">
         <div className="hero-content">
           <h1 className="hero-title">
-            <span className="gradient-text">Stem Array Sutra</span>
+            <span className="gradient-text">Universal Wisdom</span>
             <span className="hero-subtitle">Sacred Character Gallery</span>
           </h1>
           <p className="hero-description">
-            Explore the profound wisdom of the Avatamsaka Sutra through 56 interactive 
-            3D character profiles, each representing a unique aspect of Buddhist enlightenment.
+            Explore profound wisdom through 56 interactive 3D character profiles, 
+            each representing unique aspects of enlightenment and spiritual transformation.
           </p>
           <StatsDisplay stats={stats} />
         </div>
