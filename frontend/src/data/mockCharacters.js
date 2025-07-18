@@ -84,7 +84,7 @@ export const mockCharacters = [
     name: 'Supratiṣṭhita',
     type: 'Bodhisattva',
     chapter: 6,
-    modelUrl: 'modelo6.glb',
+    modelUrl: '/modelo6.glb',
     available: false,
     tags: ['Bodhisattva', 'Estabilidade', 'Fundação'],
     description: 'O Bodhisattva da estabilidade suprema, fornecendo base sólida para a prática espiritual.',
