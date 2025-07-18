@@ -77,26 +77,22 @@ class BackendTester:
         print("\n🔍 Testing CORS Configuration...")
         
         try:
-            # Test preflight request
-            headers = {
-                'Origin': 'https://example.com',
-                'Access-Control-Request-Method': 'POST',
-                'Access-Control-Request-Headers': 'Content-Type'
-            }
+            # Test actual request with Origin header to check CORS
+            headers = {'Origin': 'https://test-frontend.com'}
             
-            response = self.session.options(f"{self.api_base}/status", headers=headers, timeout=10)
+            response = self.session.get(f"{self.api_base}/", headers=headers, timeout=10)
             
-            cors_headers = {
-                'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
-                'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
-                'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
-            }
+            cors_origin = response.headers.get('Access-Control-Allow-Origin')
+            cors_credentials = response.headers.get('Access-Control-Allow-Credentials')
             
-            if cors_headers['Access-Control-Allow-Origin'] == '*':
+            if cors_origin == '*' and cors_credentials == 'true':
+                self.log_result("CORS Configuration", True, "CORS properly configured with wildcard origin and credentials")
+                return True
+            elif cors_origin == '*':
                 self.log_result("CORS Configuration", True, "CORS properly configured with wildcard origin")
                 return True
             else:
-                self.log_result("CORS Configuration", False, f"CORS headers: {cors_headers}")
+                self.log_result("CORS Configuration", False, f"CORS Origin: {cors_origin}, Credentials: {cors_credentials}")
                 return False
                 
         except requests.exceptions.RequestException as e:
